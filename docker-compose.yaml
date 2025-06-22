@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:11.7-noble
+    environment:
+      MARIADB_DATABASE: filmdb
+      MARIADB_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test:
+        [
+          "CMD",
+          "healthcheck.sh",
+          "--connect",
+          "--innodb_initialized"
+        ]
+      timeout: 30s
+
+  film-service:
+    build: ./film-service
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/filmdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  api-gateway:
+    image: haproxy:3.1.7
+    depends_on:
+      - film-service
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api-gateway/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+volumes:
+  mariadb-data:
+  grafana-storage:

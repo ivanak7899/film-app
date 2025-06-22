@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: film-service
+
+  datasource:
+    url: jdbc:mariadb://mariadb:3306/filmdb
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info,prometheus
+    metrics:
+      export:
+        prometheus:
+          enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
