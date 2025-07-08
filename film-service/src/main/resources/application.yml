@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: film-service
@@ -8,17 +11,19 @@ spring:
     password: root
     driver-class-name: org.mariadb.jdbc.Driver
 
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: health,info,prometheus
-    metrics:
-      export:
-        prometheus:
-          enabled: true
-
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true

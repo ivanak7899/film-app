@@ -31,6 +31,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/filmdb
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8081:8081"
 
   api-gateway:
     image: haproxy:3.1.7
@@ -42,9 +44,11 @@ services:
       - ./api-gateway/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
+    restart: unless-stopped
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/data:/prometheus
     ports:
       - "9090:9090"
 
