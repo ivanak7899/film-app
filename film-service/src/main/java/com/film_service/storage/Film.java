@@ -1,6 +1,7 @@
 package com.film_service.storage;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Film {
@@ -8,9 +9,16 @@ public class Film {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String title;
+
+    @NotBlank
     private String genre;
+
+    @Min(value = 1888)
     private int year;
+
+    @NotBlank
     private String director;
 
     // Constructors

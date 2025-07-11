@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com</groupId>
-	<artifactId>film-service</artifactId>
+	<artifactId>review-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>film-service</name>
+	<name>review-service</name>
 	<description>Movie app</description>
 	<url/>
 	<licenses>
@@ -79,7 +79,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>film-service</finalName>
+		<finalName>review-service</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

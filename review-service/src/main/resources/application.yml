@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: review-service
+
+  datasource:
+    url: jdbc:mariadb://mariadb:3306/reviewdb
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.jpa.domain.Specification;
 import com.film_service.storage.FilmSpecification;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
+import com.film_service.exceptions.FilmNotFoundException;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/films")
@@ -29,8 +32,24 @@ public class FilmController {
         return service.getAllFilms(spec);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Film> getFilmById(@PathVariable Long id) {
+        return service.getFilmById(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new FilmNotFoundException(id));
+    }
+
     @PostMapping
-    public Film add(@RequestBody Film film) {
+    public Film add(@RequestBody @Valid Film film) {
         return service.createFilm(film);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteFilm(@PathVariable Long id) {
+        if (service.deleteFilm(id)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new FilmNotFoundException(id);
+        }
     }
 }
