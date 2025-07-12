@@ -18,7 +18,7 @@ public class ReviewService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String filmServiceUrlBase = "http://film-service:8081/films/";
+    private final String filmServiceUrlBase = "http://film-service:8080/films/";
 
     public ReviewService(ReviewRepository repository) {
         this.repository = repository;
@@ -32,6 +32,7 @@ public class ReviewService {
             throw new IllegalArgumentException("Film with ID " + review.getFilmId() + " does not exist.");
         }
 
+        invalidateFilmCache(review.getFilmId());
         return repository.save(review);
     }
 
@@ -53,8 +54,13 @@ public class ReviewService {
     public boolean deleteReview(Long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
+            invalidateFilmCache(id);
             return true;
         }
         return false;
+    }
+
+    private void invalidateFilmCache(Long filmId) {
+        restTemplate.delete("http://film-service:8080/" + "internal/cache/film/" + filmId);
     }
 }

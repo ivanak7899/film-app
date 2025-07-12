@@ -39,6 +39,13 @@ public class FilmController {
                 .orElseThrow(() -> new FilmNotFoundException(id));
     }
 
+    @GetMapping("/{id}/rating")
+    public ResponseEntity<Double> getFilmRating(@PathVariable Long id) {
+        Double rating = service.getAverageRating(id);
+
+        return ResponseEntity.ok(rating);
+    }
+
     @PostMapping
     public Film add(@RequestBody @Valid Film film) {
         return service.createFilm(film);

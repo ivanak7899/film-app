@@ -28,7 +28,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ReviewNotFoundException.class)
     public ResponseEntity<?> handleReviewNotFound(ReviewNotFoundException ex) {
         return ResponseEntity.status(404).body(Map.of(
-                "timestamp", LocalDateTime.now(),
                 "status", 404,
                 "error", "Not Found",
                 "message", ex.getMessage()
@@ -38,7 +37,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArg(IllegalArgumentException ex) {
         return ResponseEntity.status(400).body(Map.of(
-                "timestamp", LocalDateTime.now(),
                 "status", 400,
                 "error", "Bad Request",
                 "message", ex.getMessage()
